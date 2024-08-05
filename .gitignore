@@ -1,3 +1,4 @@
 .idea/**
 /gateway-service-log.log
 /mysql-service-log.log
+/out
