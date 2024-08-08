@@ -22,8 +22,8 @@ USE `gateway`;
 
 -- Дъмп структура за таблица gateway.exchange_rate
 CREATE TABLE IF NOT EXISTS `exchange_rate` (
-                                              `id` bigint NOT NULL AUTO_INCREMENT,
-                                              `base` varchar(255) DEFAULT NULL,
+    `id` bigint NOT NULL AUTO_INCREMENT,
+    `base` varchar(255) DEFAULT NULL,
     `date` varchar(255) DEFAULT NULL,
     `timestamp` bigint NOT NULL,
     PRIMARY KEY (`id`)
@@ -33,9 +33,9 @@ CREATE TABLE IF NOT EXISTS `exchange_rate` (
 
 -- Дъмп структура за таблица gateway.rates
 CREATE TABLE IF NOT EXISTS `rates` (
-                                       `exchange_rate_id` bigint NOT NULL,
-                                       `rate` double DEFAULT NULL,
-                                       `currency` varchar(255) NOT NULL,
+    `exchange_rate_id` bigint NOT NULL,
+    `rate` double DEFAULT NULL,
+    `currency` varchar(255) NOT NULL,
     PRIMARY KEY (`exchange_rate_id`,`currency`),
     CONSTRAINT `FKfd66ts3k0br18vsiywdifswas` FOREIGN KEY (`exchange_rate_id`) REFERENCES `exchange_rate` (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS `rates` (
 
 -- Дъмп структура за таблица gateway.request_info
 CREATE TABLE IF NOT EXISTS `request_info` (
-                                              `id` bigint NOT NULL AUTO_INCREMENT,
-                                              `client` varchar(255) DEFAULT NULL,
+    `id` bigint NOT NULL AUTO_INCREMENT,
+    `client` varchar(255) DEFAULT NULL,
     `currency` varchar(255) DEFAULT NULL,
     `exchange_rate_id` bigint DEFAULT NULL,
     `request_id` varchar(255) DEFAULT NULL,
