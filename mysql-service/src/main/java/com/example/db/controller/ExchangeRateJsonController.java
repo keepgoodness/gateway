@@ -14,13 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/rates")
 public class ExchangeRateJsonController {
     private final RequestProccess requestProccess;
-
     public ExchangeRateJsonController(RequestProccess requestProccess) {
         this.requestProccess = requestProccess;
     }
 
     @PostMapping(value = "/current", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ExchangeRateDto getLatestRate(@RequestBody RequestInfoDTO requestInfoDTO){
+    public ResponseEntity<ExchangeRateDto> getLatestRate(@RequestBody RequestInfoDTO requestInfoDTO){
         requestProccess.verifyRequestIdDoesNotExist(requestInfoDTO.getRequestId());
         return ResponseEntity.ok(requestProccess.getLatestRates(requestInfoDTO));
     }

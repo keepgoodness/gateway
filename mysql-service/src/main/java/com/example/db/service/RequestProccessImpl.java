@@ -56,6 +56,18 @@ public class RequestProccessImpl implements RequestProccess {
     }
 
     @Override
+    public List<ExchangeRateDto> getHistoryRates(RequestInfoDTO requestInfo) {
+        if (requestInfo.getPeriod() == null) {
+            return null;
+        }
+        long periodStart = Instant.now().minus(requestInfo.getPeriod(), ChronoUnit.HOURS).getEpochSecond();
+        List<ExchangeRate> rates = exchangeRateRepository.findRatesFromTimestamp(periodStart);
+        return rates.stream()
+                .map(element -> modelMapper.map(element, ExchangeRateDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public ExchangeRateDto convertToDto(ExchangeRate exchangeRate) {
         ExchangeRateDto ratesDto = modelMapper.map(exchangeRate, ExchangeRateDto.class);
         return ratesDto;
