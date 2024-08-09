@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface MysqlFeignClient {
 
     @PostMapping("/current")
-    ExchangeRateDto sendRequestAndReceiveRates(@RequestBody RequestInfoDto requestInfoDto);
+    ExchangeRateDto sendRequestAndReceiveCurrentRates(@RequestBody RequestInfoDto requestInfoDto);
 }

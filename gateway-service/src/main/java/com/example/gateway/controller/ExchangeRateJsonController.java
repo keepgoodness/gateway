@@ -3,39 +3,30 @@ package com.example.gateway.controller;
 import com.example.gateway.feign.MysqlFeignClient;
 import com.example.gateway.model.dto.ExchangeRateDto;
 import com.example.gateway.model.dto.RequestInfoDto;
-import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Value;
+import com.example.gateway.validation.GroupA;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/json")
 public class ExchangeRateJsonController {
     private final MysqlFeignClient mysqlClient;
-    private final ModelMapper modelMapper;
-
-    public ExchangeRateJsonController(
-            MysqlFeignClient mysqlFeignClient,
-            ModelMapper modelMapper) {
+    public ExchangeRateJsonController(MysqlFeignClient mysqlFeignClient) {
         this.mysqlClient = mysqlFeignClient;
-        this.modelMapper = modelMapper;
     }
 
     @PostMapping(value = "/current", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ExchangeRateDto> getLatestRate(@RequestBody RequestInfoDto requestInfoDTO){
+    public ResponseEntity<ExchangeRateDto> getLatestRate(@Validated({GroupA.class}) @RequestBody RequestInfoDto requestInfoDTO){
         // тук да се проверява и взима първо от redis-service за бързодействие.
-        ExchangeRateDto response = mysqlClient.sendRequestAndReceiveRates(requestInfoDTO);
-        return ResponseEntity.ok(response);
+        ExchangeRateDto ratesCurrent = mysqlClient.sendRequestAndReceiveCurrentRates(requestInfoDTO);
+        return ResponseEntity.ok(ratesCurrent);
     }
 
-    @PostMapping(value = "/history", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ExchangeRateDto>> getRatesFromLastHours(@RequestBody @Valid RequestInfoDto requestInfo){
-//        long timestamp = Instant.now().minus(requestInfo.getPeriod(), ChronoUnit.HOURS).getEpochSecond();
-//        return ResponseEntity.ok(exchangeRateRepository.findRatesFromTimestamp(timestamp));
-        return null;
-    }
+//    @PostMapping(value = "/history", consumes = "application/json")
+//    public ResponseEntity<List<ExchangeRateDto>> getRatesFromLastHours(@Validated({GroupA.class, GroupB.class}) @RequestBody RequestInfoDto requestInfo){
+//        List<ExchangeRateDto> ratesHistory = mysqlClient.sendRequestAndReceiveRatesHistory(requestInfo);
+//        return ResponseEntity.ok(ratesHistory);
+//    }
 }

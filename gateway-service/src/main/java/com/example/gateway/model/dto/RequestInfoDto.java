@@ -1,23 +1,26 @@
 package com.example.gateway.model.dto;
 
+import com.example.gateway.validation.GroupA;
+import com.example.gateway.validation.GroupB;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 
 public class RequestInfoDto {
 
-    @NotNull(message = "RequestId is required.")
+    @NotNull(message = "RequestId must not be null. Please provide a valid requestId.", groups = {GroupA.class, GroupB.class})
     @JsonProperty("requestId")
     private String requestId;
 
     @JsonProperty("timestamp")
     private long timestamp;
 
+    @NotNull(message = "Client must not be null. Please provide a valid client value.", groups = {GroupA.class, GroupB.class})
     @JsonProperty("client")
     private String client;
 
     @JsonProperty("currency")
     private String currency;
-    @NotNull(message = "Period is required(in hours).")
+    @NotNull(message = "Period must not be null. Please provide a valid period value in hours.",  groups = {GroupB.class})
     @JsonProperty("period")
     private Integer period;
 
