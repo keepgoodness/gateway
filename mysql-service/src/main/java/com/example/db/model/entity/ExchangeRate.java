@@ -2,6 +2,8 @@ package com.example.db.model.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Entity(name = "exchange_rate")
@@ -19,6 +21,12 @@ public class ExchangeRate {
     @MapKeyColumn(name = "currency")
     @Column(name = "rate")
     private Map<String, Double> rates;
+
+    @ManyToMany(mappedBy = "exchangeRates")
+    private List<RequestInfo> requestInfos = new ArrayList<>();
+
+    public ExchangeRate() {
+    }
 
     // Getters and Setters
     public Long getId() {
@@ -59,6 +67,14 @@ public class ExchangeRate {
 
     public void setRates(Map<String, Double> rates) {
         this.rates = rates;
+    }
+
+    public List<RequestInfo> getRequestInfos() {
+        return requestInfos;
+    }
+
+    public void setRequestInfos(List<RequestInfo> requestInfos) {
+        this.requestInfos = requestInfos;
     }
 
     @Override

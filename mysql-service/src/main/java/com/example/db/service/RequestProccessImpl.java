@@ -11,8 +11,14 @@ import com.example.db.repository.RequestInfoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
-public class RequestProccessImpl implements RequestProccess{
+public class RequestProccessImpl implements RequestProccess {
 
     private final ExchangeRateRepository exchangeRateRepository;
     private final RequestInfoRepository requestInfoRepository;
@@ -28,23 +34,30 @@ public class RequestProccessImpl implements RequestProccess{
 
     @Override
     public void verifyRequestIdDoesNotExist(String requestId) {
-        if(requestInfoRepository.existsByRequestId(requestId)){
-         throw new ResourceAlreadyExistsException(requestId);
+        if (requestInfoRepository.existsByRequestId(requestId)) {
+            throw new ResourceAlreadyExistsException(requestId);
         }
     }
 
     @Override
-    public void saveRequestInfo(RequestInfoDTO requestInfoDTO, Long exchangeRateId) {
+    public ExchangeRateDto getLatestRates(RequestInfoDTO requestInfoDTO) {
         RequestInfo requestInfo = modelMapper.map(requestInfoDTO, RequestInfo.class);
-        requestInfo.setExchangeRateId(exchangeRateId);
+        ExchangeRateDto exchangeRateDto = null;
+
+        Optional<ExchangeRate> optional = exchangeRateRepository.findFirstByOrderByIdDesc();
+        if (optional.isPresent()) {
+            ExchangeRate exchangeRate = optional.get();
+            requestInfo.addExchangeRate(exchangeRate);
+            exchangeRateDto = convertToDto(exchangeRate);
+        }
+
         requestInfoRepository.save(requestInfo);
+        return exchangeRateDto;
     }
 
     @Override
-    public ExchangeRateDto getLatestRates() {
-        ExchangeRate rates = exchangeRateRepository.findFirstByOrderByIdDesc().orElseThrow(()->
-                new NotContentInDatabaseException("No data present in database."));
-        ExchangeRateDto ratesDto = modelMapper.map(rates, ExchangeRateDto.class);
+    public ExchangeRateDto convertToDto(ExchangeRate exchangeRate) {
+        ExchangeRateDto ratesDto = modelMapper.map(exchangeRate, ExchangeRateDto.class);
         return ratesDto;
     }
 }

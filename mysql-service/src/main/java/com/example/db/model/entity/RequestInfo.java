@@ -2,6 +2,9 @@ package com.example.db.model.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "request_info")
 public class RequestInfo {
@@ -21,7 +24,13 @@ public class RequestInfo {
     @Column(name = "currency")
     private String currency;
 
-    private Long exchangeRateId;
+//    private Long exchangeRateId;
+
+    @ManyToMany
+    @JoinTable(name = "request_info_exchange_rates",
+            joinColumns = @JoinColumn(name = "request_info_id"),
+    inverseJoinColumns = @JoinColumn(name = "exchange_rate_id"))
+    private List<ExchangeRate> exchangeRates = new ArrayList<>();
 
     public RequestInfo() {}
 
@@ -57,11 +66,27 @@ public class RequestInfo {
         this.currency = currency;
     }
 
-    public Long getExchangeRateId() {
-        return exchangeRateId;
+//    public Long getExchangeRateId() {
+//        return exchangeRateId;
+//    }
+
+//    public void setExchangeRateId(Long exchangeRateId) {
+//        this.exchangeRateId = exchangeRateId;
+//    }
+
+    public List<ExchangeRate> getExchangeRates() {
+        return exchangeRates;
     }
 
-    public void setExchangeRateId(Long exchangeRateId) {
-        this.exchangeRateId = exchangeRateId;
+    public void setExchangeRates(List<ExchangeRate> exchangeRates) {
+        this.exchangeRates = exchangeRates;
+    }
+
+    public void addExchangeRate(ExchangeRate exchangeRate){
+        this.exchangeRates.add(exchangeRate);
+    }
+
+    public void removeExchangeRate(ExchangeRate exchangeRate) {
+        this.exchangeRates.remove(exchangeRate);
     }
 }

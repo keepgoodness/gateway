@@ -14,7 +14,6 @@ public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Long
     ExchangeRate findLatestRate();
     Optional<ExchangeRate> findFirstByOrderByIdDesc();
     ExchangeRate findFirstByOrderByTimestampDesc();
-
     @Query("SELECT e FROM exchange_rate e WHERE e.timestamp >= :timestamp")
     List<ExchangeRate> findRatesFromTimestamp(@Param("timestamp") long timestamp);
     List<ExchangeRate> findAllByTimestampGreaterThanEqual(long timestamp);
