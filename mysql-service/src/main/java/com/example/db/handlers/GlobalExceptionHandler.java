@@ -51,9 +51,4 @@ public class GlobalExceptionHandler {
                 .body("Request with id " + ex.getMessage() + "' already exists");
     }
 
-    @ExceptionHandler(NotContentInDatabaseException.class)
-    public ResponseEntity<String> notContentInDatabase(NotContentInDatabaseException nCDEx){
-        return new ResponseEntity<>(nCDEx.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
 }
