@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+
 @Component
 public class RabbitMQListeners {
 
@@ -28,8 +31,8 @@ public class RabbitMQListeners {
     public void handleSuccessMessage(String responseStr) {
         try {
             FixerResponse response = mapper.readValue(responseStr, FixerResponse.class);
-            ExchangeRate exchangeRate = new ExchangeRate();
-            exchangeRate.setTimestamp(response.getTimestamp());
+            ExchangeRate exchangeRate = new ExchangeRate();;
+            exchangeRate.setTimestamp(Timestamp.from(Instant.ofEpochSecond(response.getTimestamp())));
             exchangeRate.setBase(response.getBase());
             exchangeRate.setDate(response.getDate());
             exchangeRate.setRates(response.getRates());

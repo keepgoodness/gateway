@@ -1,9 +1,8 @@
 package com.example.db.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotNull;
 
-public class RequestInfoDTO {
+public class StatisticDTO {
 
     @JsonProperty("requestId")
     private String requestId;
@@ -20,10 +19,10 @@ public class RequestInfoDTO {
     private Integer period;
 
     // Default constructor
-    public RequestInfoDTO() {}
+    public StatisticDTO() {}
 
     // Parameterized constructor
-    public RequestInfoDTO(String requestId, long timestamp, String client, String currency) {
+    public StatisticDTO(String requestId, long timestamp, String client, String currency) {
         this.requestId = requestId;
         this.timestamp = timestamp;
         this.client = client;
@@ -73,7 +72,7 @@ public class RequestInfoDTO {
 
     @Override
     public String toString() {
-        return "RequestInfoDTO{" +
+        return "StatisticDTO{" +
                 "requestId='" + requestId + '\'' +
                 ", timestamp=" + timestamp +
                 ", client='" + client + '\'' +

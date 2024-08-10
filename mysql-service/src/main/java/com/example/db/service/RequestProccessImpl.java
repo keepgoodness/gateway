@@ -1,14 +1,15 @@
 package com.example.db.service;
 
-import com.example.db.exception.NotContentInDatabaseException;
 import com.example.db.exception.ResourceAlreadyExistsException;
 import com.example.db.model.dto.ExchangeRateDto;
-import com.example.db.model.dto.RequestInfoDTO;
+import com.example.db.model.dto.StatisticDTO;
 import com.example.db.model.entity.ExchangeRate;
-import com.example.db.model.entity.RequestInfo;
+import com.example.db.model.entity.Statistic;
 import com.example.db.repository.ExchangeRateRepository;
-import com.example.db.repository.RequestInfoRepository;
+import com.example.db.repository.StatisticRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -20,56 +21,73 @@ import java.util.stream.Collectors;
 @Service
 public class RequestProccessImpl implements RequestProccess {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestProccessImpl.class);
+
     private final ExchangeRateRepository exchangeRateRepository;
-    private final RequestInfoRepository requestInfoRepository;
+    private final StatisticRepository statisticRepository;
     private final ModelMapper modelMapper;
 
 
     public RequestProccessImpl(ExchangeRateRepository exchangeRateRepository,
-                               RequestInfoRepository requestInfoRepository, ModelMapper modelMapper) {
+                               StatisticRepository statisticRepository, ModelMapper modelMapper) {
         this.exchangeRateRepository = exchangeRateRepository;
-        this.requestInfoRepository = requestInfoRepository;
+        this.statisticRepository = statisticRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public void verifyRequestIdDoesNotExist(String requestId) {
-        if (requestInfoRepository.existsByRequestId(requestId)) {
+        if (statisticRepository.existsByRequestId(requestId)) {
             throw new ResourceAlreadyExistsException(requestId);
         }
     }
 
     @Override
-    public ExchangeRateDto getLatestRates(RequestInfoDTO requestInfoDTO) {
-        RequestInfo requestInfo = modelMapper.map(requestInfoDTO, RequestInfo.class);
+    public ExchangeRateDto getLatestRates(StatisticDTO statisticDTO) {
+        Statistic statistic = modelMapper.map(statisticDTO, Statistic.class);
         ExchangeRateDto exchangeRateDto = null;
 
         Optional<ExchangeRate> optional = exchangeRateRepository.findFirstByOrderByIdDesc();
         if (optional.isPresent()) {
             ExchangeRate exchangeRate = optional.get();
-            requestInfo.addExchangeRate(exchangeRate);
             exchangeRateDto = convertToDto(exchangeRate);
         }
 
-        requestInfoRepository.save(requestInfo);
+        statisticRepository.save(statistic);
         return exchangeRateDto;
     }
 
     @Override
-    public List<ExchangeRateDto> getHistoryRates(RequestInfoDTO requestInfo) {
-        if (requestInfo.getPeriod() == null) {
-            return null;
-        }
-        long periodStart = Instant.now().minus(requestInfo.getPeriod(), ChronoUnit.HOURS).getEpochSecond();
+    public List<ExchangeRateDto> getHistoryRates(StatisticDTO statisticDto) {
+        long periodStart = Instant.now().minus(statisticDto.getPeriod(), ChronoUnit.HOURS).getEpochSecond();
         List<ExchangeRate> rates = exchangeRateRepository.findRatesFromTimestamp(periodStart);
+        Statistic statistic = convertToEntity(statisticDto);
+        statisticRepository.save(statistic);
+
         return rates.stream()
-                .map(element -> modelMapper.map(element, ExchangeRateDto.class))
+                .map(element -> convertToDto(element))
                 .collect(Collectors.toList());
     }
 
     @Override
     public ExchangeRateDto convertToDto(ExchangeRate exchangeRate) {
-        ExchangeRateDto ratesDto = modelMapper.map(exchangeRate, ExchangeRateDto.class);
-        return ratesDto;
+        try{
+            ExchangeRateDto ratesDto = modelMapper.map(exchangeRate, ExchangeRateDto.class);
+            return ratesDto;
+        } catch (Exception ex){
+            LOGGER.error("ModelMapper failed to map ExchangeRate {}", exchangeRate, ex);
+            throw  new IllegalStateException("Failed to map ExchangeRate to ExchangeRateDto");
+        }
+    }
+
+    @Override
+    public Statistic convertToEntity(StatisticDTO statisticDTO) {
+        try {
+            Statistic statisticInfo = modelMapper.map(statisticDTO, Statistic.class);
+            return statisticInfo;
+        } catch (Exception ex){
+            LOGGER.error("ModelMapper failed to map StatisticDTO {}", statisticDTO, ex);
+            throw  new IllegalStateException("Failed to map StatisticDTO to Statistic");
+        }
     }
 }
