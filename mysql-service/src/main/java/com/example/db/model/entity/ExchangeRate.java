@@ -2,8 +2,7 @@ package com.example.db.model.entity;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
 import java.util.Map;
 
 @Entity(name = "exchange_rate")
@@ -12,18 +11,14 @@ public class ExchangeRate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private long timestamp;
+    private Timestamp timestamp;
     private String base;
     private String date;
-
     @ElementCollection
     @CollectionTable(name = "rates", joinColumns = @JoinColumn(name = "exchange_rate_id"))
     @MapKeyColumn(name = "currency")
     @Column(name = "rate")
     private Map<String, Double> rates;
-
-    @ManyToMany(mappedBy = "exchangeRates")
-    private List<RequestInfo> requestInfos = new ArrayList<>();
 
     public ExchangeRate() {
     }
@@ -37,11 +32,11 @@ public class ExchangeRate {
         this.id = id;
     }
 
-    public long getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -67,24 +62,5 @@ public class ExchangeRate {
 
     public void setRates(Map<String, Double> rates) {
         this.rates = rates;
-    }
-
-    public List<RequestInfo> getRequestInfos() {
-        return requestInfos;
-    }
-
-    public void setRequestInfos(List<RequestInfo> requestInfos) {
-        this.requestInfos = requestInfos;
-    }
-
-    @Override
-    public String toString() {
-        return "ExchangeRate{" +
-                "id=" + id +
-                ", timestamp=" + timestamp +
-                ", base='" + base + '\'' +
-                ", date='" + date + '\'' +
-                ", rates=" + rates +
-                '}';
     }
 }
