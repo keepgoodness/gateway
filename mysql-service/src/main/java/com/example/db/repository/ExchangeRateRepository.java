@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,6 @@ public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Long
     Optional<ExchangeRate> findFirstByOrderByIdDesc();
     ExchangeRate findFirstByOrderByTimestampDesc();
     @Query("SELECT e FROM exchange_rate e WHERE e.timestamp >= :timestamp")
-    List<ExchangeRate> findRatesFromTimestamp(@Param("timestamp") long timestamp);
-    List<ExchangeRate> findAllByTimestampGreaterThanEqual(long timestamp);
+    List<ExchangeRate> findRatesFromTimestamp(@Param("timestamp") Timestamp timestamp);
+    List<ExchangeRate> findAllByTimestampGreaterThanEqual(Timestamp timestamp);
 }

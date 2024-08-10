@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -59,8 +60,8 @@ public class RequestProccessImpl implements RequestProccess {
 
     @Override
     public List<ExchangeRateDto> getHistoryRates(StatisticDTO statisticDto) {
-        long periodStart = Instant.now().minus(statisticDto.getPeriod(), ChronoUnit.HOURS).getEpochSecond();
-        List<ExchangeRate> rates = exchangeRateRepository.findRatesFromTimestamp(periodStart);
+        Instant periodStart = Instant.now().minus(statisticDto.getPeriod(), ChronoUnit.HOURS);
+        List<ExchangeRate> rates = exchangeRateRepository.findRatesFromTimestamp(Timestamp.from(periodStart));
         Statistic statistic = convertToEntity(statisticDto);
         statisticRepository.save(statistic);
 
