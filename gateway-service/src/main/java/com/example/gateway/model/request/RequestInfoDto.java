@@ -1,4 +1,4 @@
-package com.example.gateway.model.dto;
+package com.example.gateway.model.request;
 
 import com.example.gateway.validation.GroupA;
 import com.example.gateway.validation.GroupB;

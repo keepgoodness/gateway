@@ -1,6 +1,6 @@
 package com.example.gateway.handler;
 
-import com.example.gateway.exception.NotContentInDatabaseException;
+import com.example.gateway.exception.DataNotFoundException;
 import com.example.gateway.exception.ResourceAlreadyExistsException;
 import feign.RetryableException;
 import org.springframework.http.HttpStatus;
@@ -41,13 +41,6 @@ public class GlobalExceptionHandler {
                 .body(errors);
     }
 
-    @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public ResponseEntity<Object> resourceAlreadyExist(ResourceAlreadyExistsException ex){
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(ex.getMessage());
-    }
-
     @ExceptionHandler(RetryableException.class)
     public ResponseEntity<Object> connectionRefused(RetryableException ex){
         return ResponseEntity
@@ -62,11 +55,18 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
-    @ExceptionHandler(NotContentInDatabaseException.class)
-    public ResponseEntity<Object> notContentInDatabase(NotContentInDatabaseException nCDEx){
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<Object> handleConflictException(ResourceAlreadyExistsException ex) {
         return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .body(nCDEx.getMessage());
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<Object> handleConflictException(DataNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
     }
 
 }
