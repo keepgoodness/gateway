@@ -1,5 +1,6 @@
 package com.example.db.handlers;
 
+import com.example.db.exception.DataNotFoundException;
 import com.example.db.exception.ResourceAlreadyExistsException;
 import com.example.db.model.response.ErrorDetails;
 import org.slf4j.Logger;
@@ -28,12 +29,20 @@ public class GlobalExceptionHandler {
                 .body(errorDetails);
     }
 
+
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ResponseEntity<Object> entityExistByRequestId(ResourceAlreadyExistsException ex){
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .header("Request-Id", ex.getMessage())
-                .body("Statistic with id " + ex.getMessage() + "' already exists");
+                .body("Request with id " + ex.getMessage() + "' already exists");
+    }
+
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<Object> handleDataNotFoundException(DataNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
     }
 
     @ExceptionHandler(IllegalStateException.class)
