@@ -1,45 +1,29 @@
 package com.example.db.configuration;
 
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-
-    public static final String EXCHANGE_NAME = "fixer-exchange";
-    public static final String ROUTING_KEY_SUCCESS = "success";
-    public static final String ROUTING_KEY_ERROR = "error";
-    public static final String SUCCESS_QUEUE_NAME = "db-success-queue";
-    public static final String ERROR_QUEUE_NAME = "db-error-queue";
+    public static final String EXCHANGE_GATEWAY = "gateway";
+    public static final String ROUTING_KEY_RATES_REGISTERED = "rates-registered";
+    public static final String QUEUE_RATE_REGISTER = "rate-register";
 
     @Bean
     public TopicExchange exchange() {
-        return new TopicExchange(EXCHANGE_NAME);
+        return new TopicExchange(EXCHANGE_GATEWAY);
     }
 
     @Bean
     public Queue queueSuccess() {
-        return new Queue(SUCCESS_QUEUE_NAME, false);
-    }
-
-    @Bean
-    public Queue queueError(){
-        return new Queue(ERROR_QUEUE_NAME, false);
+        return new Queue(QUEUE_RATE_REGISTER, false);
     }
 
     @Bean
     public Binding succesBinding(Queue queueSuccess, TopicExchange exchange) {
-        return BindingBuilder.bind(queueSuccess).to(exchange).with(ROUTING_KEY_SUCCESS);
+        return BindingBuilder.bind(queueSuccess).to(exchange).with(ROUTING_KEY_RATES_REGISTERED);
     }
-    @Bean
-    public Binding errorBinding(Queue queueError, TopicExchange exchange) {
-        return BindingBuilder.bind(queueError).to(exchange).with(ROUTING_KEY_ERROR);
-    }
-
    /* @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
