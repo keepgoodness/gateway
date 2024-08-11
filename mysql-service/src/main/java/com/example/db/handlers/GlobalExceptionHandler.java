@@ -42,7 +42,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleDataNotFoundException(DataNotFoundException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
+                .header("currency", ex.getMessage())
+                .body(String.format("Data for currency %s is not found.", ex.getMessage()));
     }
 
     @ExceptionHandler(IllegalStateException.class)

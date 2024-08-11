@@ -26,7 +26,7 @@ public class RateServiceImpl implements RateService {
     @Override
     public Rate getLatestRateForCurrency(String currency) {
         Rate rate = repository.findTopByCurrencyOrderByTimestampDesc(currency)
-                .orElseThrow(() -> new DataNotFoundException(String.format("Data for currency '%s' is not found.", currency)));
+                .orElseThrow(() -> new DataNotFoundException(currency));
         LOGGER.info(String.format("Requested latest rate for currency: '%s'", currency));
         return rate;
     }
