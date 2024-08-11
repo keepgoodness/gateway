@@ -2,28 +2,28 @@ package com.example.db.model.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Map;
 
-@Entity(name = "exchange_rate")
-public class ExchangeRate {
+@Entity
+@Table(name = "rates")
+public class Rate implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(columnDefinition = "timestamp")
     private Timestamp timestamp;
+    @Column(length = 3, nullable = false)
     private String base;
-    private String date;
-    @ElementCollection
-    @CollectionTable(name = "rates", joinColumns = @JoinColumn(name = "exchange_rate_id"))
-    @MapKeyColumn(name = "currency")
-    @Column(name = "rate")
-    private Map<String, Double> rates;
 
-    public ExchangeRate() {
+    @Column(length = 3, nullable = false)
+    private String currency;
+    @Column(nullable = false)
+    private double rate;
+    public Rate() {
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -48,19 +48,19 @@ public class ExchangeRate {
         this.base = base;
     }
 
-    public String getDate() {
-        return date;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
-    public Map<String, Double> getRates() {
-        return rates;
+    public double getRate() {
+        return rate;
     }
 
-    public void setRates(Map<String, Double> rates) {
-        this.rates = rates;
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 }

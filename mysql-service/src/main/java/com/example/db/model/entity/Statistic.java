@@ -10,7 +10,6 @@ public class Statistic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
     private String requestId;
     private String serviceName;
     private Timestamp timestamp;
