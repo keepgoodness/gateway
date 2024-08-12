@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -45,8 +46,11 @@ public class GatewayServiceListeners {
                     .collect(Collectors.toList());
             rateRepository.saveAll(rates);
             LOGGER.info("Rates loaded and saved in database successfully.");
+            clearCache();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
+    @CacheEvict(allEntries = true, value = {"rate", "rateList"})
+    public void clearCache(){}
 }

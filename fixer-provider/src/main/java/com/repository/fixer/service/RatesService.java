@@ -49,7 +49,7 @@ public class RatesService {
             rates.put("BAM", 1.956708);
             rates.put("BBD", 2.193018);
             rates.put("BDT", 127.619213);
-            rates.put("BGN", 1.956169);
+            rates.put("BGN", 1.956167);
             rates.put("BHD", 0.409382);
             rates.put("BIF", 3129.022995);
             rates.put("BMD", 1.086254);
