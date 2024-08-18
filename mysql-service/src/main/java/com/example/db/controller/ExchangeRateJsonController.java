@@ -1,7 +1,7 @@
 package com.example.db.controller;
 
-import com.example.db.model.request.JsonRequestDTO;
-import com.example.db.model.response.JsonResponseDto;
+import com.example.db.model.request.GetawayRequestDTO;
+import com.example.db.model.response.RateResponseDto;
 import com.example.db.service.GatewayExtService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +22,13 @@ public class ExchangeRateJsonController {
     }
 
     @PostMapping(value = "/current", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JsonResponseDto> getLatestRate(@RequestBody JsonRequestDTO jsonRequestDTO) {
-        JsonResponseDto latestRates = gatewayExtService.getLatestRates(jsonRequestDTO);
+    public ResponseEntity<RateResponseDto> getLatestRate(@RequestBody GetawayRequestDTO getawayRequestDTO) {
+        RateResponseDto latestRates = gatewayExtService.getLatestRates(getawayRequestDTO);
         return ResponseEntity.ok(latestRates);
     }
 
     @PostMapping(value = "/history", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<JsonResponseDto>> getRatesFromLastHours(@RequestBody JsonRequestDTO jsonRequestDto) {
-        return ResponseEntity.ok(gatewayExtService.getHistoryRates(jsonRequestDto));
+    public ResponseEntity<Set<RateResponseDto>> getRatesFromLastHours(@RequestBody GetawayRequestDTO getawayRequestDto) {
+        return ResponseEntity.ok(gatewayExtService.getHistoryRates(getawayRequestDto));
     }
 }

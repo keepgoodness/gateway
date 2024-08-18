@@ -39,7 +39,7 @@ public class GatewayServiceListeners {
             List<Rate> rates = response.getRates().entrySet().stream()
                     .map(r -> {
                         Rate rate = new Rate();
-                        rate.setBase(response.getBase());
+                        rate.setBaseCurrency(response.getBase());
                         rate.setCurrency(r.getKey());
                         rate.setRate(r.getValue());
                         rate.setTimestamp(Timestamp.from(Instant.ofEpochSecond(response.getTimestamp())));

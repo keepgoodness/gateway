@@ -15,7 +15,7 @@ public class Rate implements Serializable {
     @Column(columnDefinition = "timestamp")
     private Timestamp timestamp;
     @Column(length = 3, nullable = false)
-    private String base;
+    private String baseCurrency;
 
     @Column(length = 3, nullable = false)
     private String currency;
@@ -40,12 +40,12 @@ public class Rate implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public String getBase() {
-        return base;
+    public String getBaseCurrency() {
+        return baseCurrency;
     }
 
-    public void setBase(String base) {
-        this.base = base;
+    public void setBaseCurrency(String baseCurrency) {
+        this.baseCurrency = baseCurrency;
     }
 
     public String getCurrency() {

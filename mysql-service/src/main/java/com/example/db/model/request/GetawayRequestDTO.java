@@ -2,7 +2,7 @@ package com.example.db.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class JsonRequestDTO {
+public class GetawayRequestDTO {
 
     @JsonProperty("requestId")
     private String requestId;
@@ -18,11 +18,13 @@ public class JsonRequestDTO {
     @JsonProperty("period")
     private Integer period;
 
+    private String serviceName;
+
     // Default constructor
-    public JsonRequestDTO() {}
+    public GetawayRequestDTO() {}
 
     // Parameterized constructor
-    public JsonRequestDTO(String requestId, long timestamp, String client, String currency) {
+    public GetawayRequestDTO(String requestId, long timestamp, String client, String currency) {
         this.requestId = requestId;
         this.timestamp = timestamp;
         this.client = client;
@@ -68,5 +70,13 @@ public class JsonRequestDTO {
 
     public void setPeriod(Integer period) {
         this.period = period;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 }

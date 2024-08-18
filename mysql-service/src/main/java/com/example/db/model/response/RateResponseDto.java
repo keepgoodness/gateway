@@ -3,18 +3,18 @@ package com.example.db.model.response;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class JsonResponseDto implements Serializable {
-    private String base;
+public class RateResponseDto implements Serializable {
+    private String baseCurrency;
     private String currency;
     private double rate;
     private Timestamp timestamp;
 
-    public String getBase() {
-        return base;
+    public String getBaseCurrency() {
+        return baseCurrency;
     }
 
-    public void setBase(String base) {
-        this.base = base;
+    public void setBaseCurrency(String baseCurrency) {
+        this.baseCurrency = baseCurrency;
     }
 
     public String getCurrency() {

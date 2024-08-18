@@ -1,11 +1,11 @@
 package com.example.db.service;
 
-import com.example.db.model.request.JsonRequestDTO;
-import com.example.db.model.response.JsonResponseDto;
+import com.example.db.model.request.GetawayRequestDTO;
+import com.example.db.model.response.RateResponseDto;
 
 import java.util.Set;
 
 public interface GatewayExtService {
-    JsonResponseDto getLatestRates(JsonRequestDTO jsonRequestDTO);
-    Set<JsonResponseDto> getHistoryRates(JsonRequestDTO requestInfo);
+    RateResponseDto getLatestRates(GetawayRequestDTO getawayRequestDTO);
+    Set<RateResponseDto> getHistoryRates(GetawayRequestDTO requestInfo);
 }
