@@ -18,8 +18,8 @@
   * #### Rest API endpoint
     * (POST) http://localhost:8081/api/v1/xml/command  връща полседните валути влезнали в релационната база, в Xml формат
       * body
-      * `<command id="133329"><get consumer="13617162"><currency>GBP</currency></get></command>`
-      * `<command id="1234-7829"><history consumer="13617162" currency="BGN" period="60" /></command>`
+        * `<command id="133329"><get consumer="13617162"><currency>GBP</currency></get></command>`
+        * `<command id="1234-7829"><history consumer="13617162" currency="BGN" period="60" /></command>`
   * #### Комуникация между сървизите
     * Взима данни директно от mysql-service с Feign клиент.
     * Изпраща взетите от fixer.io данни през RabbitMQ.
