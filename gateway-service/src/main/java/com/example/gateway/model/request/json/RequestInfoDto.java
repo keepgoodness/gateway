@@ -1,4 +1,4 @@
-package com.example.gateway.model.request;
+package com.example.gateway.model.request.json;
 
 import com.example.gateway.validation.GroupA;
 import com.example.gateway.validation.GroupB;
@@ -24,16 +24,10 @@ public class RequestInfoDto {
     @JsonProperty("period")
     private Integer period;
 
+    private String serviceName;
+
     // Default constructor
     public RequestInfoDto() {}
-
-    // Parameterized constructor
-    public RequestInfoDto(String requestId, long timestamp, String client, String currency) {
-        this.requestId = requestId;
-        this.timestamp = timestamp;
-        this.client = client;
-        this.currency = currency;
-    }
 
     // Getters and Setters
     public String getRequestId() {
@@ -76,13 +70,11 @@ public class RequestInfoDto {
         this.period = period;
     }
 
-    @Override
-    public String toString() {
-        return "RequestInfoDTO{" +
-                "requestId='" + requestId + '\'' +
-                ", timestamp=" + timestamp +
-                ", client='" + client + '\'' +
-                ", currency='" + currency + '\'' +
-                '}';
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 }
