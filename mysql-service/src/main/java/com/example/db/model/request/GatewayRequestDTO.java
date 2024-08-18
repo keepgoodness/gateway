@@ -2,7 +2,7 @@ package com.example.db.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GetawayRequestDTO {
+public class GatewayRequestDTO {
 
     @JsonProperty("requestId")
     private String requestId;
@@ -21,10 +21,10 @@ public class GetawayRequestDTO {
     private String serviceName;
 
     // Default constructor
-    public GetawayRequestDTO() {}
+    public GatewayRequestDTO() {}
 
     // Parameterized constructor
-    public GetawayRequestDTO(String requestId, long timestamp, String client, String currency) {
+    public GatewayRequestDTO(String requestId, long timestamp, String client, String currency) {
         this.requestId = requestId;
         this.timestamp = timestamp;
         this.client = client;
@@ -78,5 +78,17 @@ public class GetawayRequestDTO {
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    @Override
+    public String toString() {
+        return "GatewayRequestDTO{" +
+                "requestId='" + requestId + '\'' +
+                ", timestamp=" + timestamp +
+                ", client='" + client + '\'' +
+                ", currency='" + currency + '\'' +
+                ", period=" + period +
+                ", serviceName='" + serviceName + '\'' +
+                '}';
     }
 }

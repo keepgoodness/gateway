@@ -1,6 +1,6 @@
 package com.example.db.controller;
 
-import com.example.db.model.request.GetawayRequestDTO;
+import com.example.db.model.request.GatewayRequestDTO;
 import com.example.db.model.response.RateResponseDto;
 import com.example.db.service.GatewayExtService;
 import org.springframework.http.MediaType;
@@ -22,13 +22,13 @@ public class ExchangeRateJsonController {
     }
 
     @PostMapping(value = "/current", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RateResponseDto> getLatestRate(@RequestBody GetawayRequestDTO getawayRequestDTO) {
-        RateResponseDto latestRates = gatewayExtService.getLatestRates(getawayRequestDTO);
+    public ResponseEntity<RateResponseDto> getLatestRate(@RequestBody GatewayRequestDTO gatewayRequestDTO) {
+        RateResponseDto latestRates = gatewayExtService.getLatestRates(gatewayRequestDTO);
         return ResponseEntity.ok(latestRates);
     }
 
     @PostMapping(value = "/history", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<RateResponseDto>> getRatesFromLastHours(@RequestBody GetawayRequestDTO getawayRequestDto) {
-        return ResponseEntity.ok(gatewayExtService.getHistoryRates(getawayRequestDto));
+    public ResponseEntity<Set<RateResponseDto>> getRatesFromLastHours(@RequestBody GatewayRequestDTO gatewayRequestDto) {
+        return ResponseEntity.ok(gatewayExtService.getHistoryRates(gatewayRequestDto));
     }
 }
