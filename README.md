@@ -29,8 +29,5 @@
   * Rest API endpoints oтговарящи на заявка от gаtеway-service
   * cache Redis за бързодействие
 
-* ### redis-service
-  * Започнат, но все още не се ползва. 
-
 ### Docker
 * Изготвен е docker-compose файл.
