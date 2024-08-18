@@ -20,39 +20,28 @@
 CREATE DATABASE IF NOT EXISTS `gateway` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `gateway`;
 
--- Дъмп структура за таблица gateway.exchange_rate
-CREATE TABLE IF NOT EXISTS `exchange_rate` (
-    `id` bigint NOT NULL AUTO_INCREMENT,
-    `base` varchar(255) DEFAULT NULL,
-    `date` varchar(255) DEFAULT NULL,
-    `timestamp` bigint NOT NULL,
-    PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Изнасянето на данните беше деселектирано.
-
 -- Дъмп структура за таблица gateway.rates
 CREATE TABLE IF NOT EXISTS `rates` (
-    `exchange_rate_id` bigint NOT NULL,
-    `rate` double DEFAULT NULL,
-    `currency` varchar(255) NOT NULL,
-    PRIMARY KEY (`exchange_rate_id`,`currency`),
-    CONSTRAINT `FKfd66ts3k0br18vsiywdifswas` FOREIGN KEY (`exchange_rate_id`) REFERENCES `exchange_rate` (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `base_currency` varchar(3) NOT NULL,
+  `currency` varchar(3) NOT NULL,
+  `rate` double NOT NULL,
+  `timestamp` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1369 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Изнасянето на данните беше деселектирано.
 
--- Дъмп структура за таблица gateway.request_info
-CREATE TABLE IF NOT EXISTS `request_info` (
-    `id` bigint NOT NULL AUTO_INCREMENT,
-    `client` varchar(255) DEFAULT NULL,
-    `currency` varchar(255) DEFAULT NULL,
-    `exchange_rate_id` bigint DEFAULT NULL,
-    `request_id` varchar(255) DEFAULT NULL,
-    `timestamp` bigint DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `UKai9n5hsd01998wco6rj3bg5yx` (`request_id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- Дъмп структура за таблица gateway.statistics
+CREATE TABLE IF NOT EXISTS `statistics` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `client` varchar(255) DEFAULT NULL,
+  `currency` varchar(255) DEFAULT NULL,
+  `request_id` varchar(255) DEFAULT NULL,
+  `service_name` varchar(255) DEFAULT NULL,
+  `timestamp` datetime(6) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Изнасянето на данните беше деселектирано.
 
@@ -61,3 +50,4 @@ CREATE TABLE IF NOT EXISTS `request_info` (
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+
